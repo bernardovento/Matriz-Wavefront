@@ -155,11 +155,13 @@ int menorPonto(int posX, int posY, int matriz[][TAM_COLUNAS])
 void criarParedes(int matriz[][TAM_COLUNAS])
 {
     int parede = TAM_COLUNAS/3;
-    for (int i = 0; i < 2; i++) // Loop para criar paredes no codigo
+    
+    for (int j = 0; j < TAM_LINHAS - 1; j++) // Cria primeira parede
     {
-        for (int j = 0; j < TAM_LINHAS - 1; j++)
-        {
-            matriz[j][(i+1)*parede] = 0;
-        }
+        matriz[j][parede] = 0;
+    }
+    for (int j = 1; j < TAM_LINHAS; j++) // Cria segunda parede
+    {
+        matriz[j][2*parede] = 0;
     }
 }
