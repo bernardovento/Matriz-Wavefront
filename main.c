@@ -6,28 +6,28 @@
 
 #define LIMITE_MAIOR 999
 
-// FunÁ„o para preencher a matriz com valores iniciais (LIMITE_MAIOR)
+// Fun√ß√£o para preencher a matriz com valores iniciais (LIMITE_MAIOR)
 void preencherMatriz(int matriz[][TAM_COLUNAS]);
-// FunÁ„o para imprimir a matriz
+// Fun√ß√£o para imprimir a matriz
 void printarMatriz(int matriz[][TAM_COLUNAS]);
-// FunÁ„o para calcular as dist‚ncias na matriz
+// Fun√ß√£o para calcular as dist√¢ncias na matriz
 void mapearDistancia(int matriz[][TAM_COLUNAS]);
-// FunÁ„o para encontrar a menor dist‚ncia a partir de uma posiÁ„o
+// Fun√ß√£o para encontrar a menor dist√¢ncia a partir de uma posi√ß√£o
 int menorPonto(int posX, int posY, int matriz[][TAM_COLUNAS]);
-// FunÁ„o para colocar paredes na matriz
+// Fun√ß√£o para colocar paredes na matriz
 void criarParedes(int matriz[][TAM_COLUNAS]);
 
 int main()
 {
     int matriz[TAM_LINHAS][TAM_COLUNAS];
-    preencherMatriz(matriz);
+    preencherMatriz(matriz); // Preenche a matriz com o valor do LIMITE_MAIOR
     printf("Matriz Inicial:\n");
     matriz[0][0] = 1; // Define o ponto de partida
-    printarMatriz(matriz);
+    printarMatriz(matriz); // Imprime a matriz
     criarParedes(matriz); // Define as paredes
-    mapearDistancia(matriz); // Calcula as dist‚ncias a partir do ponto de partida
+    mapearDistancia(matriz); // Calcula as dist√¢ncias a partir do ponto de partida
     printf("\nMatriz Apos Calculo das Distancias:\n");
-    printarMatriz(matriz); // Imprime a matriz atualizada com as dist‚ncias
+    printarMatriz(matriz); // Imprime a matriz atualizada com as dist√¢ncias
     return 0;
 }
 
@@ -61,26 +61,25 @@ void printarMatriz(int matriz[][TAM_COLUNAS])
 
 void mapearDistancia(int matriz[][TAM_COLUNAS])
 {
-    int novo;
-    int contador = 0;
-
-    while (1)
+    int novo; // variavel auxiliar
+    
+    while (1) // while para verdadeiro, gerando um loop infinito a priori
     {
         int mudou = 0;
-
+         // Loop para checar toda matriz
         for (int i = 0; i < TAM_LINHAS; i++)
         {
             for (int j = 0; j < TAM_COLUNAS; j++)
             {
-                if (matriz[i][j] >= 1)
+                if (matriz[i][j] >= 1) // Checa se √© uma parede
                 {
-                    novo = 1 + menorPonto(i, j, matriz); // Calcula a nova dist‚ncia
+                    novo = 1 + menorPonto(i, j, matriz); // Calcula a nova dist√¢ncia
                     if (novo < matriz[i][j])
                     {
-                        matriz[i][j] = novo; // Atualiza a matriz se uma dist‚ncia menor for encontrada
+                        matriz[i][j] = novo; // Atualiza a matriz se uma dist√¢ncia menor for encontrada
                         if (!mudou)
                         {
-                            mudou = 1;
+                            mudou = 1; // Avisa que nesse loop ocorreram mudan√ßas na matriz
                         }
                     }
                 }
@@ -89,12 +88,9 @@ void mapearDistancia(int matriz[][TAM_COLUNAS])
 
         if (!mudou)
         {
-            contador++;
+            break; // Para o while infinito
         }
-        if (contador > 400)
-        {
-            break; // Sai do loop se n„o houver mais mudanÁas ou apÛs um limite de iteraÁıes
-        }
+
     }
 }
 
@@ -108,7 +104,7 @@ int menorPonto(int posX, int posY, int matriz[][TAM_COLUNAS])
         pontos[i] = LIMITE_MAIOR;
     }
 
-    // Calcula as dist‚ncias a partir de posiÁıes vizinhas na matriz
+    // Calcula as dist√¢ncias a partir de posi√ß√µes vizinhas na matriz, n√£o permitindo que ultrapasse os limites do array
     if (posX > 0)
     {
         pontos[0] = matriz[posX - 1][posY];
@@ -146,20 +142,20 @@ int menorPonto(int posX, int posY, int matriz[][TAM_COLUNAS])
     }
 
     int menor = LIMITE_MAIOR + 1;
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 8; i++) // Loop para buscar o menor vizinho do ponto de origem
     {
         if (pontos[i] < menor && pontos[i] >= 1)
         {
-            menor = pontos[i]; // Encontra a menor dist‚ncia entre as posiÁıes vizinhas
+            menor = pontos[i];
         }
     }
-    return menor;
+    return menor; // Retorna o menor vizinho
 }
 
 void criarParedes(int matriz[][TAM_COLUNAS])
 {
     int parede = TAM_COLUNAS/3;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 2; i++) // Loop para criar paredes no codigo
     {
         for (int j = 0; j < TAM_LINHAS - 1; j++)
         {
