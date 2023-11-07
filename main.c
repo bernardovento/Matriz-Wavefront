@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 
 #define TAM_LINHAS 20
 #define TAM_COLUNAS 20
+#define PRINTAR_PROCESSO 0
 
 #define LIMITE_MAIOR 999
 
@@ -16,17 +18,28 @@ void mapearDistancia(int matriz[][TAM_COLUNAS]);
 int menorPonto(int posX, int posY, int matriz[][TAM_COLUNAS]);
 // Função para colocar paredes na matriz
 void criarParedes(int matriz[][TAM_COLUNAS]);
+// Função para printar o processo de wave front
+void printarProcesso(int matriz[][TAM_COLUNAS]);
+
 
 int main()
 {
     int matriz[TAM_LINHAS][TAM_COLUNAS];
     preencherMatriz(matriz); // Preenche a matriz com o valor do LIMITE_MAIOR
-    printf("Matriz Inicial:\n");
-    matriz[0][0] = 1; // Define o ponto de partida
-    printarMatriz(matriz); // Imprime a matriz
     criarParedes(matriz); // Define as paredes
+    matriz[0][0] = 1; // Define o ponto de partida
+    printf("Inicial: ");
+    printarMatriz(matriz); // Imprime a matriz
+
+    if(PRINTAR_PROCESSO)
+        Sleep(2000);
+
     mapearDistancia(matriz); // Calcula as distâncias a partir do ponto de partida
-    printf("\nMatriz Apos Calculo das Distancias:\n");
+
+    if(PRINTAR_PROCESSO)
+        system("cls");
+
+    printf("\nApos Calculo das Distancias:\n");
     printarMatriz(matriz); // Imprime a matriz atualizada com as distâncias
     return 0;
 }
@@ -45,13 +58,19 @@ void preencherMatriz(int matriz[][TAM_COLUNAS])
 
 void printarMatriz(int matriz[][TAM_COLUNAS])
 {
+    printf("Matriz:\n");
     // Loop para imprimir a matriz formatada
     for (int x = 0; x < TAM_LINHAS; x++)
     {
         printf("(");
         for (int y = 0; y < TAM_COLUNAS; y++)
         {
-            printf(" %.3i", matriz[x][y]); // Imprime cada valor da matriz
+            if(matriz[x][y] == LIMITE_MAIOR)
+                printf(" |||");
+            else if(matriz[x][y] > 0)
+                printf(" %.3i", matriz[x][y]); // Imprime cada valor da matriz
+            else
+                printf(" ---");
             if (y != TAM_COLUNAS - 1)
                 printf(",");
         }
@@ -62,7 +81,7 @@ void printarMatriz(int matriz[][TAM_COLUNAS])
 void mapearDistancia(int matriz[][TAM_COLUNAS])
 {
     int novo; // variavel auxiliar
-    
+
     while (1) // while para verdadeiro, gerando um loop infinito a priori
     {
         int mudou = 0;
@@ -77,6 +96,8 @@ void mapearDistancia(int matriz[][TAM_COLUNAS])
                     if (novo < matriz[i][j])
                     {
                         matriz[i][j] = novo; // Atualiza a matriz se uma distância menor for encontrada
+                        if(PRINTAR_PROCESSO)
+                            printarProcesso(matriz);
                         if (!mudou)
                         {
                             mudou = 1; // Avisa que nesse loop ocorreram mudanças na matriz
@@ -155,7 +176,7 @@ int menorPonto(int posX, int posY, int matriz[][TAM_COLUNAS])
 void criarParedes(int matriz[][TAM_COLUNAS])
 {
     int parede = TAM_COLUNAS/3;
-    
+
     for (int j = 0; j < TAM_LINHAS - 1; j++) // Cria primeira parede
     {
         matriz[j][parede] = 0;
@@ -164,4 +185,11 @@ void criarParedes(int matriz[][TAM_COLUNAS])
     {
         matriz[j][2*parede] = 0;
     }
+}
+
+void printarProcesso(int matriz[][TAM_COLUNAS])
+{
+    system("cls");
+    printarMatriz(matriz);
+    Sleep(50);
 }
