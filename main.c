@@ -2,9 +2,19 @@
 #include <stdlib.h>
 #include <windows.h>
 
+// Configurações do código:
+// Tamanho da matriz:
 #define TAM_LINHAS 20
 #define TAM_COLUNAS 20
+// Define onde vai ser o ponto de partida do Wave Front
+#define POS_X_INICIAL 0
+#define POS_Y_INICIAL 0
+// Vai aparecer o processo de Wave Front? 0 para não e 1 para sim
 #define PRINTAR_PROCESSO 0
+// Vai existir paredes na matriz? 0 para não e 1 para sim
+#define TER_PAREDES 0
+
+
 
 #define LIMITE_MAIOR 999
 
@@ -26,8 +36,9 @@ int main()
 {
     int matriz[TAM_LINHAS][TAM_COLUNAS];
     preencherMatriz(matriz); // Preenche a matriz com o valor do LIMITE_MAIOR
-    criarParedes(matriz); // Define as paredes
-    matriz[0][0] = 1; // Define o ponto de partida
+    if(TER_PAREDES) // Checa se vai ou não ter paredes
+        criarParedes(matriz); // Define as paredes
+    matriz[POS_X_INICIAL][POS_Y_INICIAL] = 1; // Define o ponto de partida
     printf("Inicial: ");
     printarMatriz(matriz); // Imprime a matriz
 
